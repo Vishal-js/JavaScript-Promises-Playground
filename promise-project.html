@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise Projects</title>
+    
+    <!-- style code for Quiz APP -->
+    <style>
+
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: blanchedalmond;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 50%;
+            margin: 5vh auto;
+            background-color: white;
+            border-radius:5px ;
+            text-align: center;
+            padding: 20px;
+        }
+
+
+        .header p {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .ans {
+            width: 80%;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content:space-between;
+            gap: 10px;
+        }
+
+        button {
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+    </style>
+
+
+
+    <!-- style for image loader  -->
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: blanchedalmond;  
+        }
+
+        .img-box {
+            width: 500px;
+            padding: 2vh 2vh;
+            margin: 5vh auto;
+            border-radius: 5px;
+            border: 1px solid black;
+        }
+
+        .img-box img {
+            width: 100%;
+        }
+
+    </style>
+
+
+    <!-- style for Random Joke Generator -->
+     <style>
+        .joke {
+            text-align: center;
+        }
+
+        .jokes {
+            width: 50%;
+            margin: 2vh auto;
+            padding: 5vh 1vh;
+            border: 1px solid black;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+      #jbtn {
+            padding: 1vh 1vh;
+            width: 5%!important;
+        }
+     </style>
+
+
+</head>
+<body>
+
+
+    <!-- Random Joke Generator
+    Goal: Simulate fetching jokes using promises.
+    Features:
+    Store a few jokes in an array.
+    Resolve with a random joke after a delay.
+    Use .then() to display the joke. -->
+
+
+    <div class="joke">
+         <p class="jokes"></p>
+        <button class="btn" id="jbtn">Next</button>
+    </div>
+
+    <script>
+        let arrayjoke = [
+            'Did you hear they arrested the devil? Yeah, they got him on possession.',
+            'My IQ test results came back. They were negative.',
+            'What do you call a hippie’s wife? Mississippi.'
+        ];
+        
+        let onebutton = document.querySelector('.btn');
+
+        onebutton.addEventListener('click', () => {
+            new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    let display = document.querySelector('.jokes');
+                    let onejoke = Math.floor(Math.random() * arrayjoke.length);
+                    display.textContent = arrayjoke[onejoke];
+                    
+                    resolve(display); // Resolve the promise when the joke is displayed
+                },); // Added a 1-second delay for effect
+            })
+            .then(() => console.log("Joke loaded successfully!"))
+            .catch(error => console.error(error));
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- . Image Loader
+    Goal: Simulate loading an image.
+    Features:
+    Create a promise that resolves if an image URL is valid (mock this with strings).
+    Reject if the image URL is invalid.
+    Use .then() to display the "image loaded" message and .catch() for errors. -->
+
+  
+   <div class="img-box"></div>
+
+    <script>
+        const imgBox = document.querySelector('.img-box');
+    
+        const loadImage = () => {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    const img = document.createElement('img'); 
+                    img.src = "Jujutsu+Kaisen+-+Opening+3.jpg";
+                    img.alt = "Jujutsu Kaisen Opening 3";
+    
+                    // Handle the image loading
+                    img.onload = () => resolve(img);
+                    img.onerror = () => reject("Failed to load the image");
+    
+                    imgBox.appendChild(img); // Add the image to the .img-box
+                }, 100);
+            });
+        };
+    
+        loadImage()
+            .then(() => console.log("Image loaded successfully!"))
+            .catch(error => console.error(error));
+    </script>
+
+
+
+
+
+
+
+
+    <!-- Quiz App
+    Goal: Build a simple quiz that uses promises to handle correct or incorrect answers.
+    Features:
+    Use a promise to check if the user’s answer matches the correct answer.
+    Resolve for correct answers and reject for incorrect ones.
+    Chain multiple questions with .then(). -->
+      
+
+ 
+    <div class="container">
+        <div class="header">
+            <p>What is the difference between <head> and <body> in HTML?</p>
+        </div>
+
+        <div class="currect-ans">
+            <p class="area"></p>
+        </div>
+
+        <div class="ans">
+            <button class="btn" value="Content">Content</button>
+            <button class="btn" value="Metadata">Metadata</button>
+            <button class="btn" value="Required">Required</button>
+            <button class="btn" value="Footer">Footer</button>
+        </div>
+    </div>
+
+
+
+
+ <script>
+
+const display = document.querySelector('.area');
+const btns = document.querySelectorAll('.btn');
+
+    function collectAndCheckAnswer() {
+      return new Promise((resolve, reject) => {
+        btns.forEach(button => {
+          button.addEventListener("click", (event) => {
+            const userAnswer = event.target.value;
+            const correctAnswer = "Metadata";
+
+            if (userAnswer === correctAnswer) {
+              resolve(`${userAnswer} is the correct answer!`);
+            } else {
+              reject("Your answer is incorrect. Please try again.");
+            }
+          });
+        });
+      });
+    }
+
+    collectAndCheckAnswer()
+      .then((message) => {
+        display.style.color = "green";
+        display.textContent = message;
+      })
+      .catch((error) => {
+        display.style.color = "red";
+        display.textContent = error;
+      });
+</script>
+ 
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
